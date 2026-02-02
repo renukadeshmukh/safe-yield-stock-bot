@@ -8,11 +8,19 @@ A modular, automated system designed for long-term investors to generate consist
 
 ---
 
-## 📈 Strategy
-The "Safe Yield" approach is built on three unbreakable rules:
-1. **Never Sell:** Strikes are selected to minimize the probability of assignment.
-2. **Safety First:** Targets the **0.15 – 0.20 Delta** range.
-3. **Theta Optimized:** Scans for expirations ~30 days out to capture maximum time decay.
+## 📈 Strategy: The "Income Harvest"
+This bot automates a conservative **Options Trading** strategy focused on generating yield from existing equity without losing the underlying shares.
+
+### 1. Covered Calls (Income Generation)
+* **Goal:** Sell OTM (Out-of-the-Money) calls to collect premium.
+* **"Never Sell" Rule:** We specifically target a **0.15 - 0.20 Delta**. This ensures a ~80-85% statistical probability that the stock stays *below* our strike price, allowing us to keep the shares and the cash.
+
+### 2. Cash Secured Puts (Entry/Acquisition)
+* **Goal:** Sell puts on high-quality stocks we want to own.
+* **Safety:** We only sell puts at prices where we are happy to "lock in" a long-term position, ensuring we stay true to the goal of never selling at a loss.
+
+### 3. Risk Management & Rolling
+* **Delta Monitoring:** If a position's Delta drifts toward 0.25+, the bot flags it for a "Roll" (buying back the current option and selling a further dated one) to avoid assignment.
 
 ---
 
