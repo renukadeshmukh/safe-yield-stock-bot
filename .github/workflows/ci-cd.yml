@@ -77,7 +77,6 @@ jobs:
               -e TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }} \
               -e GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} \
               -e HEALTHCHECK_URL=${{ secrets.HEALTHCHECK_URL }} \
-              -e MY_STOCKS="${{ secrets.MY_STOCKS }}" \
               -e MIN_DELTA=0.15 \
               -e MAX_DELTA=0.20 \
               -e RISK_FREE_RATE=0.04 \
