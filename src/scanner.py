@@ -1,8 +1,11 @@
 import yfinance as yf
 from datetime import datetime
 from .calculators import calculate_delta
+from .config import MIN_DELTA, MAX_DELTA, RISK_FREE_RATE
 
-def find_safe_options(symbol, target_delta_min=0.15, target_delta_max=0.20):
+def find_safe_options(symbol, target_delta_min=None, target_delta_max=None):
+    target_delta_min = target_delta_min or MIN_DELTA
+    target_delta_max = target_delta_max or MAX_DELTA
     """
     Connects to Yahoo Finance and filters for options that fit the 
     'Safe Yield' criteria (Low Delta, ~30 days out).
@@ -28,8 +31,7 @@ def find_safe_options(symbol, target_delta_min=0.15, target_delta_max=0.20):
     # Loop through all available CALL options
     for _, row in chain.calls.iterrows():
         # Calculate Delta using our Math Lab tool
-        # Using 0.04 as a standard 2026 interest rate
-        delta = calculate_delta(current_price, row['strike'], T, 0.04, row['impliedVolatility'])
+        delta = calculate_delta(current_price, row['strike'], T, RISK_FREE_RATE, row['impliedVolatility'])
         
         # Filter: Only keep strikes that fit your 'Safe Zone'
         if target_delta_min <= delta <= target_delta_max:

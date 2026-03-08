@@ -2,14 +2,14 @@ from datetime import datetime
 import pandas as pd
 from tabulate import tabulate
 from .scanner import find_safe_options
+from .config import MY_STOCKS
 
 def run_daily_report():
     """
     The main execution loop. It aggregates data for all your holdings
     and presents it in the dual-table format.
     """
-    # Your core long-term holdings
-    my_stocks = ["AAPL", "TSLA", "SCHD", "MSFT"]
+    my_stocks = MY_STOCKS
     all_opportunities = []
     
     print(f"--- SCANNING MARKET FOR SAFE YIELD ---")
