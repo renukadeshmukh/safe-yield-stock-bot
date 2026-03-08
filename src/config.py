@@ -11,3 +11,4 @@ MY_STOCKS = [s.strip() for s in os.getenv("MY_STOCKS", "AAPL,TSLA,MSFT,SCHD").sp
 MIN_DELTA = float(os.getenv("MIN_DELTA", "0.15"))
 MAX_DELTA = float(os.getenv("MAX_DELTA", "0.20"))
 RISK_FREE_RATE = float(os.getenv("RISK_FREE_RATE", "0.04"))
+HEALTHCHECK_URL = os.getenv("HEALTHCHECK_URL")
