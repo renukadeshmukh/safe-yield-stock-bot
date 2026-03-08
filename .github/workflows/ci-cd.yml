@@ -67,13 +67,18 @@ jobs:
           username: ${{ secrets.NUC_USER }}
           key: ${{ secrets.NUC_SSH_KEY }}
           script: |
-            # Pull the latest image
             docker pull ${{ env.IMAGE }}:latest
-            # Stop old container, start new one
             docker stop trading-bot 2>/dev/null || true
             docker rm trading-bot 2>/dev/null || true
             docker run -d \
               --name trading-bot \
               --restart unless-stopped \
-              --env-file ~/trading-bot.env \
+              -e TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} \
+              -e TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }} \
+              -e GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} \
+              -e HEALTHCHECK_URL=${{ secrets.HEALTHCHECK_URL }} \
+              -e MY_STOCKS="${{ secrets.MY_STOCKS }}" \
+              -e MIN_DELTA=0.15 \
+              -e MAX_DELTA=0.20 \
+              -e RISK_FREE_RATE=0.04 \
               ${{ env.IMAGE }}:latest
