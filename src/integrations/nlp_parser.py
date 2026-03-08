@@ -1,6 +1,6 @@
 import json
 import google.generativeai as genai
-from .config import GOOGLE_API_KEY
+from ..config import GOOGLE_API_KEY
 
 genai.configure(api_key=GOOGLE_API_KEY)
 _model = genai.GenerativeModel("gemini-1.5-flash")
@@ -30,7 +30,6 @@ def parse_trade(raw_text: str) -> dict | None:
     response = _model.generate_content(EXTRACTION_PROMPT + raw_text)
     try:
         text = response.text.strip()
-        # Strip markdown code fences if present
         if text.startswith("```"):
             text = text.split("\n", 1)[1].rsplit("```", 1)[0]
         return json.loads(text)

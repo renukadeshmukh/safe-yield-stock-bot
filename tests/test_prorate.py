@@ -1,5 +1,5 @@
 from datetime import date
-from src.prorate import prorate_premium
+from src.core.prorate import prorate_premium
 
 
 def test_equal_split_across_two_months():
