@@ -88,3 +88,16 @@ jobs:
               -e MAX_DELTA=0.20 \
               -e RISK_FREE_RATE=0.04 \
               ${{ env.IMAGE }}:latest
+
+  # ── Alert on failure ───────────────────────────────
+  notify:
+    needs: [test, build, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram alert
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d parse_mode=Markdown \
+            -d text="🚨 *CI/CD Pipeline Failed*%0A%0ARepo: safe-yield-stock-bot%0ABranch: ${{ github.ref_name }}%0ACommit: \`${{ github.sha }}\`%0ARun: [View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
