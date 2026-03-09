@@ -119,6 +119,35 @@ git push → GitHub Actions → pytest → Docker build → Push to GHCR → Dep
 - **Tests gate deployment** — if tests fail, nothing deploys
 - **Docker-based** — code + deps baked into image, no "works on my machine"
 - **Auto-restart** — container restarts on crash
+- **Tailscale** — secure tunnel from GitHub Actions to home NUC
+
+### Deploying to a New Device
+
+All secrets live in GitHub Secrets (repo → Settings → Secrets → Actions). To deploy to a different machine:
+
+1. Install Docker and SSH on the new device
+2. Install Tailscale: `curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up`
+3. Generate SSH key: `ssh-keygen -t ed25519 -f ~/.ssh/github_deploy -N "" && cat ~/.ssh/github_deploy.pub >> ~/.ssh/authorized_keys`
+4. Update these GitHub Secrets:
+   - `NUC_HOST` → new device's Tailscale IP (`tailscale ip -4`)
+   - `NUC_SSH_KEY` → contents of `~/.ssh/github_deploy`
+5. Push a commit — it auto-deploys to the new device
+
+### GitHub Secrets Reference
+
+| Secret | Purpose | Where to Get |
+|--------|---------|--------------|
+| `NUC_HOST` | Tailscale IP of deploy target | `tailscale ip -4` on device |
+| `NUC_USER` | SSH username on device | `whoami` on device |
+| `NUC_SSH_KEY` | SSH private key for deploy | `cat ~/.ssh/github_deploy` |
+| `TELEGRAM_TOKEN` | Telegram bot token | [BotFather](https://t.me/BotFather) |
+| `TELEGRAM_CHAT_ID` | Your Telegram chat ID | Message [@userinfobot](https://t.me/userinfobot) |
+| `GOOGLE_API_KEY` | Gemini API key | [AI Studio](https://aistudio.google.com/apikey) |
+| `TS_OAUTH_CLIENT_ID` | Tailscale OAuth client ID | [Tailscale Admin](https://login.tailscale.com/admin/settings/trust-credentials) |
+| `TS_OAUTH_SECRET` | Tailscale OAuth secret | Same as above |
+| `HEALTHCHECK_URL` | Uptime ping URL (optional) | [Healthchecks.io](https://healthchecks.io) |
+
+> ⚠️ GitHub Secrets are write-only — you can't read them back. Keep a copy in a password manager.
 
 ## 📋 Roadmap
 
